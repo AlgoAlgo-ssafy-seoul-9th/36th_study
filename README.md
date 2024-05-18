@@ -104,6 +104,7 @@ from itertools import combinations, product
 def solution(dice):
     answer = []
     max_value = 0
+    
     def bs_win(val, lst):
         l, r = 0, len(lst)-1
 
@@ -146,19 +147,19 @@ def solution(dice):
                 tmp_sum += B[k][p[k]]
             win += bs_win(tmp_sum, sum_lst)
             lose += bs_lose(tmp_sum, sum_lst)
-        ans_win = []
-        ans_lose = []
+        a_win = []
+        a_lose = []
         for i in range(2*len(C)):
             if i in C:
-                ans_win.append(i+1)
+                a_win.append(i+1)
             else:
-                ans_lose.append(i+1)
+                a_lose.append(i+1)
         if win >= lose and win > m:
             m = win
-            return ans_lose, m
+            return a_lose, m
         if lose >= win and lose > m:
             m = lose
-            return ans_win, m
+            return a_win, m
         return False
     l = len(dice)
 
@@ -182,7 +183,6 @@ def solution(dice):
             max_value = check[1]
 
     return answer
-
 ```
 
 ### [상미](./주사위%20고르기/상미.py)
