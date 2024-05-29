@@ -30,8 +30,7 @@ pops = list(map(int, input().split()))  # 인구 수
 graph = [[] for _ in range(N)]      
 
 for i in range(N):
-    data = list(map(int, input().split()))      # data[0]: i 구역과 인접한 구역 수
-                                                # date[1] ~ : 인접한 구역의 번호 
+    data = list(map(int, input().split()))      # data[0]: i 구역과 인접한 구역 수/ data[1] ~ : 인접한 구역의 번호 
     for j in range(1, len(data)):
         graph[i].append(data[j] - 1)        # 인덱스로 할거라 1 빼줌
 
