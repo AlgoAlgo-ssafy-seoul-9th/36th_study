@@ -44,6 +44,29 @@ print(dp[-1][-1])
 ### [상미](./보드%20점프/상미.py)
 
 ```py
+# 처음에 재귀로 풀었는데 시간 초과 남
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+
+dp = [[0] * N for _ in range(N)]
+dp[0][0] = 1  # 시작점
+
+for i in range(N):
+    for j in range(N):
+        if i == N-1 and j == N-1:
+            break
+        if dp[i][j] > 0 and arr[i][j] > 0:
+            if i + arr[i][j] < N:
+                dp[i + arr[i][j]][j] += dp[i][j]
+            if j + arr[i][j] < N:
+                dp[i][j + arr[i][j]] += dp[i][j]
+
+print(dp[N-1][N-1])
+
 
 ```
 
@@ -62,7 +85,7 @@ def main():
     dp = [[0] * N for _ in range(N)]
     dp[0][0] = 1
     direction = [(0,1), (1,0)]
-        
+
     for i in range(N):
         for j in range(N):
             if dp[i][j] == 0:
@@ -73,12 +96,12 @@ def main():
                 ni, nj = i+di*field[i][j], j+dj*field[i][j]
                 if ni < N and nj < N:
                     dp[ni][nj] += dp[i][j]
-    
-    
+
+
     # [print(dp[i]) for i in range(N)]
 
     print(dp[-1][-1])
-                    
+
     return
 
 
@@ -124,7 +147,7 @@ from itertools import combinations, product
 def solution(dice):
     answer = []
     max_value = 0
-    
+
     def bs_win(val, lst):
         l, r = 0, len(lst)-1
 
@@ -208,6 +231,7 @@ def solution(dice):
 ### [상미](./주사위%20고르기/상미.py)
 
 ```py
+
 ```
 
 ### [성구](./주사위%20고르기/성구.py)
@@ -218,85 +242,85 @@ def solution(dice):
 def solution(dice):
     l = len(dice)
     stack = []
-    
-    
+
+
     def bsWin(target, cand):
         s,e = 0, len(cand)-1
-        
+
         while s <= e:
             m = (s+e)//2
-            
+
             if cand[m] >= target:
                 e = m - 1
             else:
                 s = m + 1
-        
+
         return s
-    
-    
+
+
     def bsLose(target, cand):
         s,e = 0, len(cand)-1
-        
+
         while s <= e:
             m = (s+e)//2
-            
+
             if cand[m] > target:
                 e = m - 1
             else:
                 s = m + 1
-        
+
         return len(cand) - s
-    
-    
-    
+
+
+
     def makeCand(arr):
         cand = []
         s = [(0, 0)]
-        
+
         while s:
             i, d = s.pop()
-            
+
             if i == len(arr):
                 cand.append(d)
                 continue
-            
+
             for j in range(6):
                 s.append((i+1, d+dice[arr[i]][j]))
-        
+
         return sorted(cand)
-        
-    
-    
-    
+
+
+
+
     def checkWin():
         A = set(stack)
         B = []
-        
+
         for i in range(l):
             if i not in A:
                 B.append(i)
-        
+
         cand_A = makeCand(stack)
         cand_B = makeCand(B)
-        
+
         cnt_w = 0
         cnt_l = 0
         for a in cand_A:
             cnt_w += bsWin(a, cand_B)
             cnt_l += bsLose(a, cand_B)
-        
-        
+
+
         if cnt_w >= cnt_l:
             return (cnt_w, list(map(lambda x:x+1, stack)))
         else:
             return (cnt_l, list(map(lambda x:x+1, B)))
-    
-    
+
+
     def bt(idx, maxv, ans):
-        
+
         if idx == l // 2:
             return (maxv, ans)
-        
+
         if len(stack) == l // 2:
             v, arr = checkWin()
 
@@ -304,23 +328,24 @@ def solution(dice):
                 ans = [*arr]
                 maxv = v
             return (maxv, ans)
-        
-        
+
+
         for i in range(idx+1, l):
             stack.append(i)
             maxv, ans = bt(i, maxv, ans)
             stack.pop()
-        
+
         return (maxv, ans)
-    
+
     _, answer = bt(-1, 0, [])
-    
+
     return answer
 ```
 
 ### [영준](./주사위%20고르기/영준.py)
 
 ```py
+
 ```
 
 <br/>
@@ -383,16 +408,16 @@ def main():
         dp[1][0] = dp[0][1] + tg[1][0]
         dp[1][1] = min(dp[0][1], dp[0][2], dp[1][0]) + tg[1][1]
         dp[1][2] = min(dp[0][1], dp[0][2], dp[1][1]) + tg[1][2]
-        
+
         for i in range(2, N):
             dp[i][0] = min(dp[i-1][0], dp[i-1][1]) + tg[i][0]
-            dp[i][1] = min(dp[i-1]) 
+            dp[i][1] = min(dp[i-1])
             dp[i][2] = min(dp[i-1][1], dp[i-1][2])
             dp[i][1] = min(dp[i][1], dp[i][0]) +  tg[i][1]
             dp[i][2] = min(dp[i][2], dp[i][1]) + tg[i][2]
         # [print(dp[i]) for i in range(N)]
         return dp[-1][1]
-    
+
     k = 1
     while True:
         N = int(input())
@@ -504,7 +529,7 @@ def main():
     # 입력
     N = int(input())
     population = tuple(map(int,input().split()))
-    
+
     # 이웃 그래프
     graph = [[] for _ in range(N)]
     total_population = sum(population)
@@ -514,14 +539,14 @@ def main():
         _, *near = map(int, input().split())
         graph[i] = set(map(lambda x:x-1, near))
 
-    # 2일 때 예외 케이스 
+    # 2일 때 예외 케이스
     if N == 2:
         print(abs(population[0]-population[1]))
         return
-    
+
     # 구현
     stack = []          # 순열 저장용
-    visited = [0] * N   
+    visited = [0] * N
 
     # bfs 통한 연결 확인
     def check(is_stack):
@@ -534,7 +559,7 @@ def main():
             for i in range(N):
                 if i not in stack:
                     tmp.append(i)
-                    
+
 
             que = deque([tmp[0]])
             v = set([tmp[0]])
@@ -548,9 +573,9 @@ def main():
                     v.add(node)
                     que.append(node)
 
-        
+
         return 1 if v == compare else 0
-        
+
 
     # 탐색
     def bt(city, minv, men):
@@ -561,7 +586,7 @@ def main():
         elif len(stack) == 1:
             if check(0):
                 minv = min(minv, abs(total_population-men*2))
-        
+
         # 절반까지만 탐색(이후는 중복)
         if len(stack) == N//2:
             return minv
@@ -575,9 +600,9 @@ def main():
                 minv = min(minv,bt(i, minv, (men+population[i])))
                 visited[i] = 0
                 stack.pop()
-        
+
         return minv
-    
+
 
     ans = bt(-1, 10000, 0)
     if ans == 10000:
@@ -722,6 +747,7 @@ for _ in range(T):
 ### [성구](./최종%20순위/성구.py)
 
 ```py
+
 ```
 
 ### [영준](./최종%20순위/영준.py)
@@ -735,7 +761,6 @@ for _ in range(T):
 </details>
 
 <br/><br/>
-
 
 # 알고리즘 설명
 
