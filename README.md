@@ -345,7 +345,45 @@ def solution(dice):
 ### [영준](./주사위%20고르기/영준.py)
 
 ```py
+# 19번부터 시간초과
+def f(i, K, s, arr, num_arr, dice):
+    if i==K:
+        num_arr.append(s)
+    else:
+        for j in range(6):
+            f(i+1, K, s+dice[arr[i]][j], arr, num_arr, dice)
 
+
+def solution(dice):
+    answer = []
+    N = len(dice)   # 주사위 수
+
+    max_v = 0
+    # N//2개 고르기
+    for i in range(1, 1<<N):
+        A = []
+        B = []
+        for j in range(N):
+            if i&(1<<j):
+                A.append(j)
+            else:
+                B.append(j)
+        if len(A)==N//2:
+            win_cnt = 0
+            num_A = []
+            num_B = []
+            f(0, N//2, 0, A, num_A, dice)
+            f(0, N//2, 0, B, num_B, dice)
+            for p in num_A:
+                for q in num_B:
+                    if p>q:
+                        win_cnt += 1
+            if max_v < win_cnt:
+                max_v = win_cnt
+                answer = A[:]
+    for i in range(N//2):
+        answer[i] += 1
+    return answer
 ```
 
 <br/>
